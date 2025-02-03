@@ -1,0 +1,8 @@
+<button (click)="zoomIn()">+</button>
+<button (click)="zoomOut()">-</button>
+<button (click)="terminate()">terminate</button>
+<button (click)="release()">release</button>
+
+@for(x of pages(); track x.i; let index=$index) {
+  <app-page [zoom]="zoom()" [index]="index" />
+}
