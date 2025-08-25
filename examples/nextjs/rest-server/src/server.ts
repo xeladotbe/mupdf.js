@@ -87,6 +87,32 @@ function validatePageNumber(
   return pageNumber - 1
 }
 
+// POST /document/save
+app.post(
+  '/document/save',
+  async (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    try {
+      const { url } = req.body
+      if (!url) {
+        return res.status(400).json({ error: 'URL is required' })
+      }
+
+      const document = await loadDocumentFromUrl(url)
+      const pdfDocument = document as mupdf.PDFDocument
+      const outputBuffer = pdfDocument.saveToBuffer('incremental')
+      const outputPath = path.join('public', `output-${Date.now()}.pdf`)
+      fs.writeFileSync(outputPath, outputBuffer.asUint8Array())
+      res.json({ url: `${HOST}:${PORT}/${path.basename(outputPath)}` })
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
 // GET /document/needs-password
 app.get(
   '/document/needs-password',

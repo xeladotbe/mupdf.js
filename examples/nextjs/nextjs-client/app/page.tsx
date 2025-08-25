@@ -6,6 +6,12 @@ const testDocument = "http://localhost:8080/test.pdf";
 
 const apiEndpoints = [
   {
+    name: "Save",
+    endpoint: "/document/save",
+    method: "POST",
+    defaultBody: {},
+  },
+  {
     name: "Check Needs Password",
     endpoint: "/document/needs-password",
     method: "GET",
